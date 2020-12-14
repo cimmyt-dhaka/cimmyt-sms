@@ -2,10 +2,12 @@ const
   express = require('express'),
   { urlencoded, json } = require("body-parser"),
   { connect } = require("mongoose"),
-  // swaggerJsdoc = require("swagger-jsdoc"),
-  // swaggerUi = require("swagger-ui-express"),
+  swaggerJsdoc = require("swagger-jsdoc"),
+  { serve, setup } = require("swagger-ui-express"),
+
   port = process.env.PORT || 5000,
-  { mongoURI } = require('./config/keys'),
+
+  { nodeEnvironment, mongoURI } = require('./config/keys'),
   sms = require('./routes/sms'),
 
   app = express();
@@ -13,6 +15,41 @@ const
 app.use(urlencoded({ extended: false }));
 app.use(json());
 app.use('/sms', sms);
+
+const optsSwagger = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "CIMMYT SMS API",
+      version: "0.1.0",
+      description:
+        "An API to send SMS for CIMMYT's apps and activities",
+      // license: {
+      //   name: "MIT",
+      //   url: "https://spdx.org/licenses/MIT.html",
+      // },
+      contact: {
+        name: "CIMMYT-Dhaka",
+        email: "m.billah@cgiar.org",
+        url: "https://www.cimmyt.org/"
+      },
+    },
+    servers: [
+      {
+        url: nodeEnvironment === "development"
+          ? "http://localhost:5000/sms"
+          : "herokuapp.com/sms",
+      },
+    ],
+  },
+  apis: ["./routes/sms.js"],
+};
+
+app.use(
+  "/api-docs",
+  serve,
+  setup(swaggerJsdoc(optsSwagger))
+);
 
 connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
