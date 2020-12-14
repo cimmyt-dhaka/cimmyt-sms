@@ -1,0 +1,23 @@
+{
+  "name": "tech_bhai_nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.7",
+    "swagger-jsdoc": "^6.0.0-rc.4",
+    "swagger-ui-express": "^4.1.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
