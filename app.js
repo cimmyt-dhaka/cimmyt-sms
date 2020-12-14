@@ -38,7 +38,7 @@ const optsSwagger = {
       {
         url: nodeEnvironment === "development"
           ? "http://localhost:5000/sms"
-          : "herokuapp.com/sms",
+          : "https://cimmyt-sms.herokuapp.com/sms",
       },
     ],
   },
