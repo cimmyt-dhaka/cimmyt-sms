@@ -5,7 +5,8 @@ const
 
   { smsKey, smsServer, smsSenderID } = require('../config/keys'),
 
-  isKeyValid = require('../utils/is-valid-key');
+  analyzeResponse = require('../utils/analyze-sms-send'),
+  middlewareKeyValidation = require('../middleware/key-validation');
 
 // Visit: https://swagger.io/docs/specification/about/
 /**
@@ -36,17 +37,10 @@ const
  *               unicode:
  *                 type: boolean
  */
-router.post('/send', async (req, res) => {
-  const
-    { to, body, unicode } = req.body,
-    { apikey } = req.query;
+router.post('/send', middlewareKeyValidation, async (req, res) => {
+  const { to, body, unicode } = req.body;
 
   try {
-    const keyItems = await isKeyValid(apikey);
-    if (!keyItems) return res
-      .status(401)
-      .json({ error: "Invalid key" });
-
     const
       params = {
         api_key: smsKey,
@@ -60,16 +54,17 @@ router.post('/send', async (req, res) => {
         method: 'get',
         baseURL: smsServer,
         params
-      });
+      }),
+      analysis = await analyzeResponse(resRequest.data);
 
-    res.json(resRequest.data);
+    res.json(analysis);
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
   }
 });
 
-router.get('/balance', async (req, res) => {
+router.get('/balance', middlewareKeyValidation, async (req, res) => {
   try {
     resRequest = await request({
       url: `/miscapi/${smsKey}/getBalance`,

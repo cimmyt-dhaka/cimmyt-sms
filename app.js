@@ -7,7 +7,7 @@ const
 
   port = process.env.PORT || 5000,
 
-  { nodeEnvironment, mongoURI } = require('./config/keys'),
+  { apiURL, mongoURI } = require('./config/keys'),
   sms = require('./routes/sms'),
 
   app = express();
@@ -35,11 +35,7 @@ const optsSwagger = {
       },
     },
     servers: [
-      {
-        url: nodeEnvironment === "development"
-          ? "http://localhost:5000/sms"
-          : "https://cimmyt-sms.herokuapp.com/sms",
-      },
+      { url: `${apiURL}/sms` }
     ],
   },
   apis: ["./routes/sms.js"],
