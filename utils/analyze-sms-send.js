@@ -19,6 +19,11 @@ module.exports = data => new Promise((resolve, reject) => {
     resolve("SMS submitted");
   } else {
     const error = errors.find(el => el.error === data);
-    reject(error ? error.msg : data);
+    if(error) {
+      reject(error.msg);
+    } else {
+      console.error(data);
+      reject("Unknown error, please check the log");
+    }
   }
 });
