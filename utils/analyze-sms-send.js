@@ -22,7 +22,7 @@ module.exports = data => new Promise((resolve, reject) => {
     if(error) {
       reject(error.msg);
     } else {
-      console.error(data);
+      console.log(data);
       reject("Unknown error, please check the log");
     }
   }

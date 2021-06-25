@@ -10,7 +10,7 @@ const
 
   sendSmsCallback = async (req, res) => {
     const
-      { to, body, unicode } = req,
+      { to, body, unicode } = req.body,
       { path } = req;
   
     try {
