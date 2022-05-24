@@ -3,16 +3,16 @@ const
   { request } = require('axios'),
   router = Router(),
 
-  { smsKey, smsServer, smsSenderID } = require('../config/keys'),
+  { smsKey, smsServer, smsSenderID } = require('../config/keys.js'),
 
-  analyzeResponse = require('../utils/analyze-sms-send'),
-  middlewareKeyValidation = require('../middleware/key-validation'),
+  analyzeResponse = require('../utils/analyze-sms-send.js'),
+  middlewareKeyValidation = require('../middleware/key-validation.js'),
 
   sendSmsCallback = async (req, res) => {
     const
       { to, body, unicode } = req.body,
       { path } = req;
-  
+
     try {
       const
         resRequest = await request({
@@ -28,7 +28,7 @@ const
           }
         }),
         analysis = await analyzeResponse(resRequest.data);
-  
+
       res.json(analysis);
     } catch (error) {
       res.status(500).json(error);
@@ -96,7 +96,7 @@ router.post('/send', middlewareKeyValidation, sendSmsCallback);
  */
 router.post('/send-alt', middlewareKeyValidation, sendSmsCallback);
 
- router.get('/balance', middlewareKeyValidation, async (req, res) => {
+router.get('/balance', middlewareKeyValidation, async (req, res) => {
   try {
     resRequest = await request({
       url: `/miscapi/${smsKey}/getBalance`,

@@ -1,7 +1,7 @@
 const
-  isEmail = require('../utils/is-email'),
-  isMongoOID = require('../utils/is-mongo-oid'),
-  Users = require('../models/Users');
+  isEmail = require('../utils/is-email.js'),
+  isMongoOID = require('../utils/is-mongo-oid.js'),
+  Users = require('../models/Users.js');
 
 module.exports = async (req, res, next) => {
   const { apikey } = req.query;

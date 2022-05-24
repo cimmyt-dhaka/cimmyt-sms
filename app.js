@@ -7,8 +7,8 @@ const
 
   port = process.env.PORT || 5000,
 
-  { apiURL, mongoURI } = require('./config/keys'),
-  sms = require('./routes/sms'),
+  { apiURL, mongoURI } = require('./config/keys.js'),
+  sms = require('./routes/sms.js'),
 
   app = express();
 
