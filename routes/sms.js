@@ -1,39 +1,10 @@
 const
   { Router } = require('express'),
-  { request } = require('axios'),
   router = Router(),
 
-  { smsKey, smsServer, smsSenderID } = require('../config/keys.js'),
-
-  analyzeResponse = require('../utils/analyze-sms-send.js'),
   middlewareKeyValidation = require('../middleware/key-validation.js'),
+  sendSmsCallback = require('../core/ssd-tech/');
 
-  sendSmsCallback = async (req, res) => {
-    const
-      { to, body, unicode } = req.body,
-      { path } = req;
-
-    try {
-      const
-        resRequest = await request({
-          url: '/smsapi',
-          method: 'get',
-          baseURL: smsServer,
-          [path === '/send' ? 'params' : 'data']: {
-            api_key: smsKey,
-            senderid: smsSenderID,
-            type: unicode ? 'unicode' : 'text',
-            msg: body,
-            contacts: to.split(',').join('+')
-          }
-        }),
-        analysis = await analyzeResponse(resRequest.data);
-
-      res.json(analysis);
-    } catch (error) {
-      res.status(500).json(error);
-    }
-  };
 
 // Visit: https://swagger.io/docs/specification/about/
 /**
@@ -66,6 +37,7 @@ const
  */
 router.post('/send', middlewareKeyValidation, sendSmsCallback);
 
+
 /**
  * @swagger
  * /send-alt:
@@ -96,19 +68,20 @@ router.post('/send', middlewareKeyValidation, sendSmsCallback);
  */
 router.post('/send-alt', middlewareKeyValidation, sendSmsCallback);
 
-router.get('/balance', middlewareKeyValidation, async (req, res) => {
-  try {
-    resRequest = await request({
-      url: `/miscapi/${smsKey}/getBalance`,
-      method: 'get',
-      baseURL: smsServer
-    });
+// router.get('/balance', middlewareKeyValidation, async (req, res) => {
+//   try {
+//     resRequest = await request({
+//       url: `/miscapi/${smsKey}/getBalance`,
+//       method: 'get',
+//       baseURL: smsServer
+//     });
 
-    res.json(resRequest.data);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
-  }
-});
+//     res.json(resRequest.data);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json(error);
+//   }
+// });
+
 
 module.exports = router;
