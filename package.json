@@ -1,13 +1,13 @@
 {
   "name": "cimmyt-sms-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "This is the process that a number CIMMYT apps uses in order send SMS texts.",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "server": "nodemon app.js"
   },
-  "author": "",
+  "author": "Mutasim Billah <mutasim.wre@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.0",
